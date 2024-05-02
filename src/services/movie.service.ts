@@ -1,23 +1,29 @@
-import { Request,Response } from "express";
-import { movie,IMovies } from "../models";
+import { movie,IMovies, watchLater } from "../models";
 
 export class movieService{
-    async getAllMoviesService(req:Request,res:Response){
-       let data = await movie.find()
-       res.json({message:"Received",data})
+    async getAllMoviesService():Promise<IMovies[]>{
+       let data:IMovies[] = await movie.find()
+      return data
     }
+
     async addMovieService(data:object):Promise<void>{
         await movie.create(data);
     }
 
-    async deleteMovieService(req:Request,res:Response):Promise<void>{
-        let {id} = req.params
+    async deleteMovieService(id:string):Promise<IMovies|null>{
+      
         let data:IMovies|null = await movie.findByIdAndDelete(id)
         if(data){
-            //todo remainig delete movie from watch later collection... 
-            res.json({message:"Data Deleted Succesfully"})
-        }else{
-            res.json({message:"Invalid ID"})
+            //todo remainig delete movie from watch later collection...
+            await watchLater.deleteMany({movieId:id}) 
         }
+        return data
+    }
+    async updateMovieService(id:string,data:IMovies):Promise<object>{
+        // let dummy:IMovies|null = null
+        let dataUpdated:object =  await movie.updateOne({_id:id},data)
+        console.log(dataUpdated)
+        return dataUpdated
+        // return dummy
     }
 }

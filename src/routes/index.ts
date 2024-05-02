@@ -1,3 +1,4 @@
 import route from "./movies.routes";
-
-export {route}
+import userRouter from "./user.routes";
+import profileRouter from "./profile.routes";
+export {route,userRouter,profileRouter}

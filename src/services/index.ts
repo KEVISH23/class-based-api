@@ -1,2 +1,5 @@
 import {movieService} from './movie.service'
-export {movieService}
+import { profileServices } from './profile.service'
+import { userService } from './user.service'
+
+export {movieService,userService,profileServices}

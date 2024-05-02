@@ -5,9 +5,16 @@ export const errorHandler = (err:any):string =>{
         message = "Invalid ID from user"
         return message;
     }
-    for (const key in err.errors) {
-        message+=err.errors[key].message
-        message+=" & "
+    if(err.code === 11000){
+        message = "Email already exists"
+        return message
     }
-    return message.slice(0,message.length-3)
+    if(err.name === 'ValidationError'){
+        for (const key in err.errors) {
+            message+=err.errors[key].message
+            message+=" & "
+        }
+        return message.slice(0,message.length-3)
+    }
+    return message = err.message
 }
