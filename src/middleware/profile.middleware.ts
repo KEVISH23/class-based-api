@@ -14,7 +14,7 @@ export class profileMiddleWare{
             }
         }catch(err:any){
             let message:string = errorHandler(err)
-            res.json({message})
+            res.status(500).json({message})
         }
     }
 
@@ -29,7 +29,8 @@ export class profileMiddleWare{
                 res.status(409).json({message:"Movie Already in watch later"})
             }
         }catch(err:any){
-            res.status(500).json({message:"Server Error"})
+            let message:string = errorHandler(err)
+            res.status(500).json({message})
         }
     }
 }

@@ -2,7 +2,7 @@ import {Request,Response} from 'express'
 import { userService } from '../services'
 import { errorHandler } from '../handler/errorHandler'
 import { IProfiles, IUsers } from '../models'
-let userSerObj = new userService()
+let userSerObj:userService = new userService()
 export class userController{
     async getAllUsers(req:Request,res:Response):Promise<void>{
         try{
@@ -73,18 +73,14 @@ export class userController{
         try{
             let {id} = req.params
             let userObj:IUsers = req.body
-            console.log(userObj)
-            if(Object.keys(userObj).length===0){
-                res.status(401).json({message:"Invalid Data Entry"})
+            // console.log(userObj)
+            if(Object.keys(req.body).some((ele)=>ele==="userName"||ele==="userEmail"||ele==="userPassword")){
+                await userSerObj.updateUserService(id,userObj)
+                res.status(200).json({message:"User Updated Succesfully"})
             }else{
-                
-                if(true){
-                     let data:any = await userSerObj.updateUserService(id,userObj)
-                     res.status(200).json({message:"User Updated Succesfully"})
-                 }else{
-                  res.status(401).json({message:"Invalid Data Entry"})
-                 }
+                res.status(422).json({message:"Invalid Data Entry"})
             }
+                
         }catch(err){
             let message:string = errorHandler(err);
             res.status(500).json({message})

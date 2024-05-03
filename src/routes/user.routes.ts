@@ -11,5 +11,5 @@ userRouter.post('/logoutUser/:id',userMiddlewareObj.isLoggedIn,userControllerObj
 userRouter.delete('/deleteUser/:id',userMiddlewareObj.isLoggedIn,userControllerObj.deleteUSer)
 userRouter.get('/viewProfiles/:id',userMiddlewareObj.isLoggedIn,userControllerObj.viewProfiles)
 
-userRouter.put('/updateUser/:id',userMiddlewareObj.isLoggedIn,userControllerObj.updateUser)
+userRouter.patch('/updateUser/:id',userMiddlewareObj.isLoggedIn,userControllerObj.updateUser)
 export default userRouter

@@ -10,7 +10,7 @@ export class userService{
     }
 
     async addUserService(userObj:IUsers):Promise<void>{
-        let plainText = userObj.userPassword
+        let plainText:string = userObj.userPassword
         let salt = await bcrypt.genSalt(10)
         let hash = await bcrypt.hash(plainText,salt)
         userObj.userPassword = hash
@@ -45,10 +45,14 @@ export class userService{
         return data
     }
 
-    async updateUserService(id:string,userObj:IUsers):Promise<object>{
-        console.log(userObj);
-        let data:object = await user.updateOne({_id:id},{userObj})
-        console.log(data)
-        return data
+    async updateUserService(id:string,userObj:IUsers):Promise<void>{
+        // console.log(userObj);
+        if(userObj.userPassword && userObj.userPassword !== ""){
+            let salt = await bcrypt.genSalt(10)
+            let hash = await bcrypt.hash(userObj.userPassword.toString(),salt)
+            userObj.userPassword = hash
+        }
+       await user.findByIdAndUpdate(id,userObj)
+        
     }
 }
